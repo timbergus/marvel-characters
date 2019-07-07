@@ -1,0 +1,9 @@
+/node_modules/
+/__reports__/
+/.vscode/
+/docs/
+/dist/
+stats.json
+*.DS_Store
+*.log
+*.xml
