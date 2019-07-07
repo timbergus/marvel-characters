@@ -62,7 +62,5 @@ module.exports = env => merge([
     nodir: true,
   })),
   extensions(),
-  alias(),
   getAssets(),
-  env.prod && cleanDist(),
 ]);

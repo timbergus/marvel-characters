@@ -40,12 +40,17 @@ export default class ListView extends Component<Props> {
             {
               ({ loading, error, data }) => {
                 if (loading) return <Loader />;
-                if (error) this.goToError();
+
+                if (error) {
+                  this.goToError();
+                  return null;
+                }
 
                 return data.characters.map(item => (
                   <ListItem
                     key={uuidv1()}
                     onClick={() => this.goToCharacterDetail(item.id)}
+                    className="list-item"
                   >
                     <ListItemAvatar>
                       <Avatar alt={item.name} src={item.thumbnail} />

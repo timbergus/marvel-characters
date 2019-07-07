@@ -5,3 +5,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@media only screen and (min-width: 512px) {
+  .loader {
+    width: 350px;
+  }
+}

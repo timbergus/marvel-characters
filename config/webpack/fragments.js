@@ -4,9 +4,8 @@ const PurifyCSSPlugin = require('purifycss-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const SystemBellPlugin = require('system-bell-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports.setMode = (mode = 'development') => ({ mode });
 
@@ -85,9 +84,9 @@ module.exports.loadCSS = ({ include, exclude } = {}) => ({
 
 module.exports.extractCSS = ({ include, exclude, use } = {}) => {
 
-  const plugin = new ExtractTextPlugin({
-    allChunks: true,
-    filename: '[name].[chunkhash].css',
+  const plugin = new MiniCssExtractPlugin({
+    filename: '[name].css',
+    chunkFilename: '[id].css',
   });
 
   return {
@@ -96,10 +95,10 @@ module.exports.extractCSS = ({ include, exclude, use } = {}) => {
         test: /\.css$/,
         include,
         exclude,
-        use: plugin.extract({
-          use,
-          fallback: 'style-loader',
-        }),
+        use: [
+          MiniCssExtractPlugin.loader,
+          ...use,
+        ],
       }],
     },
     plugins: [plugin],
@@ -150,16 +149,6 @@ module.exports.extensions = () => ({
   },
 });
 
-module.exports.alias = () => ({
-  resolve: {
-    alias: {
-      images: resolve('src', 'assets', 'images'),
-      reducers: resolve('src', 'reducers'),
-      components: resolve('src', 'components'),
-    },
-  },
-});
-
 module.exports.getAssets = () => ({
   plugins: [
     new CopyWebpackPlugin([
@@ -168,11 +157,5 @@ module.exports.getAssets = () => ({
         to: resolve('dist', 'assets'),
       },
     ]),
-  ],
-});
-
-module.exports.cleanDist = () => ({
-  plugins: [
-    new CleanWebpackPlugin('dist'),
   ],
 });

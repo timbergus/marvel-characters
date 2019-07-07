@@ -41,7 +41,11 @@ export default class ListView extends Component<Props> {
         {
           ({ loading, error, data }) => {
             if (loading) return <Loader />;
-            if (error) this.goToError();
+
+            if (error) {
+              this.goToError();
+              return null;
+            }
 
             return (
               <Fragment>
@@ -58,9 +62,6 @@ export default class ListView extends Component<Props> {
                         {data.characters[0].name}
                       </Typography>
                       <Typography variant="body2" color="textSecondary" component="p">
-                        {data.characters[0].name}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary" component="p">
                         {data.characters[0].description}
                       </Typography>
                     </CardContent>
@@ -71,6 +72,13 @@ export default class ListView extends Component<Props> {
                     </Button>
                   </CardActions>
                 </Card>
+                {
+                  data.characters[0].comics.length > 0 && (
+                    <Typography variant="h5" component="h4" style={{ marginTop: '20px' }}>
+                      Comics
+                    </Typography>
+                  )
+                }
                 <ComicList comics={data.characters[0].comics} />
               </Fragment>
             );

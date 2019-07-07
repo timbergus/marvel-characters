@@ -2,7 +2,12 @@ h1, h2 {
   text-align: center;
 }
 
-.batman {
+.error-action {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.batman-error {
   height: 480px;
   position: absolute;
   top: 50%;
@@ -10,7 +15,7 @@ h1, h2 {
   transform: translate(-50%, -50%);
 }
 
-.error-action {
-  margin-top: 30px;
-  text-align: center;
+.batman-error .hidden {
+  opacity: 0;
+  transition: 0.5s;
 }

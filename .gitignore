@@ -1,6 +1,7 @@
 /node_modules/
-/__reports__/
+/__tests__/coverage/
 /.vscode/
+/.firebase/
 /docs/
 /dist/
 stats.json
