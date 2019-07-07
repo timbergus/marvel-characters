@@ -29,6 +29,11 @@ export default class ListView extends Component<Props> {
     history.goBack();
   }
 
+  goToError = () => {
+    const { history } = this.props;
+    history.push('/error');
+  }
+
   render() {
     const { match } = this.props;
     return (
@@ -36,7 +41,7 @@ export default class ListView extends Component<Props> {
         {
           ({ loading, error, data }) => {
             if (loading) return <Loader />;
-            if (error) return `Error! ${error.message}`;
+            if (error) this.goToError();
 
             return (
               <Fragment>

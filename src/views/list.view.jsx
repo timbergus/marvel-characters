@@ -21,9 +21,14 @@ type Props = {
 };
 
 export default class ListView extends Component<Props> {
-  navigateToCharacterDetail = (id: number) => {
+  goToCharacterDetail = (id: number) => {
     const { history } = this.props;
     history.push(`/detail/${id}`);
+  }
+
+  goToError = () => {
+    const { history } = this.props;
+    history.push('/error');
   }
 
   render() {
@@ -35,12 +40,12 @@ export default class ListView extends Component<Props> {
             {
               ({ loading, error, data }) => {
                 if (loading) return <Loader />;
-                if (error) return `Error! ${error.message}`;
+                if (error) this.goToError();
 
                 return data.characters.map(item => (
                   <ListItem
                     key={uuidv1()}
-                    onClick={() => this.navigateToCharacterDetail(item.id)}
+                    onClick={() => this.goToCharacterDetail(item.id)}
                   >
                     <ListItemAvatar>
                       <Avatar alt={item.name} src={item.thumbnail} />
