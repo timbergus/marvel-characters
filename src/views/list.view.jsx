@@ -35,18 +35,18 @@ export default class ListView extends Component<Props> {
     return (
       <Fragment>
         <h1>Marvel Universe</h1>
-        <List>
-          <Query query={GET_CHARACTERS}>
-            {
-              ({ loading, error, data }) => {
-                if (loading) return <Loader />;
+        <Query query={GET_CHARACTERS}>
+          {
+            ({ loading, error, data }) => {
+              if (loading) return <Loader />;
 
-                if (error) {
-                  this.goToError();
-                  return null;
-                }
+              if (error) {
+                this.goToError();
+                return null;
+              }
 
-                return data.characters.map(item => (
+              return data.characters.map(item => (
+                <List>
                   <ListItem
                     key={uuidv1()}
                     onClick={() => this.goToCharacterDetail(item.id)}
@@ -59,11 +59,11 @@ export default class ListView extends Component<Props> {
                       primary={item.name}
                     />
                   </ListItem>
-                ));
-              }
+                </List>
+              ));
             }
-          </Query>
-        </List>
+          }
+        </Query>
       </Fragment>
     );
   }
