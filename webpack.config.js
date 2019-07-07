@@ -15,11 +15,9 @@ const {
   notify,
   purifyCSS,
   extensions,
-  alias,
   getAssets,
-  cleanDist,
   loadGraphQl,
-} = require ('./config/webpack/fragments');
+} = require('./config/webpack/fragments');
 
 module.exports = env => merge([
   env.dev && setMode('development'),
@@ -44,10 +42,6 @@ module.exports = env => merge([
   env.prod && extractCSS({
     include: resolve('src'),
     exclude: /node_modules/,
-    use: [
-      'css-loader',
-      'postcss-loader',
-    ],
   }),
   loadImages({
     include: resolve('src'),

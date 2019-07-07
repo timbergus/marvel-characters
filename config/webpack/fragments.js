@@ -5,7 +5,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const SystemBellPlugin = require('system-bell-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports.setMode = (mode = 'development') => ({ mode });
 
@@ -25,7 +27,7 @@ module.exports.setOutput = (path) => {
   return {
     output: {
       path,
-      filename: '[name].[chunkhash].js',
+      filename: '[name].[hash].js',
     },
     plugins: [plugin],
   };
@@ -82,10 +84,9 @@ module.exports.loadCSS = ({ include, exclude } = {}) => ({
   },
 });
 
-module.exports.extractCSS = ({ include, exclude, use } = {}) => {
-
+module.exports.extractCSS = ({ include, exclude } = {}) => {
   const plugin = new MiniCssExtractPlugin({
-    filename: '[name].css',
+    filename: '[name].[hash].css',
     chunkFilename: '[id].css',
   });
 
@@ -97,11 +98,18 @@ module.exports.extractCSS = ({ include, exclude, use } = {}) => {
         exclude,
         use: [
           MiniCssExtractPlugin.loader,
-          ...use,
+          'css-loader',
+          'postcss-loader',
         ],
       }],
     },
     plugins: [plugin],
+    optimization: {
+      minimizer: [
+        new TerserJSPlugin({}),
+        new OptimizeCSSAssetsPlugin({}),
+      ],
+    },
   };
 };
 
@@ -116,7 +124,7 @@ module.exports.loadImages = ({ include, exclude, options } = {}) => ({
           loader: 'image-trace-loader',
           options: {
             color: '#cccccc',
-          }
+          },
         },
         {
           loader: 'url-loader',
