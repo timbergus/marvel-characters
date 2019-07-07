@@ -5,6 +5,7 @@ export const GET_CHARACTERS = gql`
     characters {
       id
       name
+      thumbnail
     }
   }
 `;
@@ -15,6 +16,10 @@ export const GET_CHARACTER_DETAIL = gql`
       id
       name
       thumbnail
+      description
+      comics {
+        name
+      }
     }
   }
 `;

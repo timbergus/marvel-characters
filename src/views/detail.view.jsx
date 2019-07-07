@@ -5,9 +5,18 @@ import './detail.view.css';
 import React, { Fragment, Component } from 'react';
 import { Query } from 'react-apollo';
 
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
 import { GET_CHARACTER_DETAIL } from '../apollo/queries';
 
 import Loader from '../components/loader';
+import ComicList from '../components/comic-list';
 
 type Props = {
   match: Object,
@@ -15,7 +24,7 @@ type Props = {
 };
 
 export default class ListView extends Component<Props> {
-  goBack() {
+  goBack = () => {
     const { history } = this.props;
     history.goBack();
   }
@@ -23,24 +32,46 @@ export default class ListView extends Component<Props> {
   render() {
     const { match } = this.props;
     return (
-      <div>
-        <h1>Detail</h1>
-        <Query query={GET_CHARACTER_DETAIL} variables={{ id: Number(match?.params?.id) }}>
-          {
-            ({ loading, error, data }) => {
-              if (loading) return <Loader />;
-              if (error) return `Error! ${error.message}`;
+      <Query query={GET_CHARACTER_DETAIL} variables={{ id: Number(match?.params?.id) }}>
+        {
+          ({ loading, error, data }) => {
+            if (loading) return <Loader />;
+            if (error) return `Error! ${error.message}`;
 
-              return (
-                <Fragment>
-                  <h1>{data.characters[0].name}</h1>
-                  <img alt="thumbnail" src={data.characters[0].thumbnail} />
-                </Fragment>
-              );
-            }
+            return (
+              <Fragment>
+                <h1>Marvel Universe</h1>
+                <Card>
+                  <CardActionArea>
+                    <CardMedia
+                      image={data.characters[0].thumbnail}
+                      title={data.characters[0].name}
+                      className="card-media"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {data.characters[0].name}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        {data.characters[0].name}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        {data.characters[0].description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Button size="small" color="primary" onClick={this.goBack}>
+                      Back
+                    </Button>
+                  </CardActions>
+                </Card>
+                <ComicList comics={data.characters[0].comics} />
+              </Fragment>
+            );
           }
-        </Query>
-      </div>
+        }
+      </Query>
     );
   }
 }

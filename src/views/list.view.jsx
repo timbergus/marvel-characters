@@ -6,6 +6,12 @@ import React, { Fragment, Component } from 'react';
 import { Query } from 'react-apollo';
 import uuidv1 from 'uuid/v1';
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+
 import { GET_CHARACTERS } from '../apollo/queries';
 
 import Loader from '../components/loader';
@@ -23,8 +29,8 @@ export default class ListView extends Component<Props> {
   render() {
     return (
       <Fragment>
-        <h1>List</h1>
-        <ul>
+        <h1>Marvel Universe</h1>
+        <List>
           <Query query={GET_CHARACTERS}>
             {
               ({ loading, error, data }) => {
@@ -32,16 +38,22 @@ export default class ListView extends Component<Props> {
                 if (error) return `Error! ${error.message}`;
 
                 return data.characters.map(item => (
-                  <li
+                  <ListItem
                     key={uuidv1()}
                     onClick={() => this.navigateToCharacterDetail(item.id)}
-                    style={{cursor: 'pointer'}}
-                  >{item.id}</li>
+                  >
+                    <ListItemAvatar>
+                      <Avatar alt={item.name} src={item.thumbnail} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={item.name}
+                    />
+                  </ListItem>
                 ));
               }
             }
           </Query>
-        </ul>
+        </List>
       </Fragment>
     );
   }
