@@ -27,7 +27,7 @@ export default class CharacterList extends Component<Props> {
 
   handleOnScroll = () => {
     const { onLoadMoreCharacters, loading } = this.props;
-    if (((window ?.innerHeight + window ?.scrollY) >= document ?.body ?.offsetHeight) && !loading) {
+    if (((window?.innerHeight + window?.scrollY) >= document?.body?.offsetHeight) && !loading) {
       onLoadMoreCharacters();
     }
   }

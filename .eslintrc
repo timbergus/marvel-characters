@@ -25,8 +25,9 @@
     "class-methods-use-this": 0
   },
   "globals": {
+    "describe": false,
     "expect": false,
-    "it": false,
+    "test": false,
     "jest": false
   }
 }

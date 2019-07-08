@@ -10,6 +10,7 @@
     "start": "webpack-dev-server --env.dev",
     "test": "npm run eslint && npm run stylelint && npm run flow && jest",
     "test:jest": "jest --detectOpenHandles",
+    "test:watch": "jest --watch",
     "build": "rimraf dist && npm test && webpack --env.prod",
     "docs": "esdoc -c esdoc.json",
     "eslint": "eslint src",
