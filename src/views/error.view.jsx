@@ -1,6 +1,6 @@
 // @flow
 
-import './error.view.css';
+import './error.view.pcss';
 
 import React, { Fragment, Component } from 'react';
 import Button from '@material-ui/core/Button';

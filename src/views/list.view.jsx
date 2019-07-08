@@ -1,26 +1,33 @@
 // @flow
 
-import './list.view.css';
+import './list.view.pcss';
 
 import React, { Fragment, Component } from 'react';
 import { Query } from 'react-apollo';
-import uuidv1 from 'uuid/v1';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { GET_CHARACTERS } from '../apollo/queries';
 
 import Loader from '../components/loader';
+import CharacterList from '../components/character-list';
 
 type Props = {
   history: Object,
 };
 
-export default class ListView extends Component<Props> {
+type State = {
+  orderBy: string,
+};
+
+export default class ListView extends Component<Props, State> {
+  state = {
+    orderBy: 'name_asc',
+  };
+
   goToCharacterDetail = (id: number) => {
     const { history } = this.props;
     history.push(`/detail/${id}`);
@@ -31,36 +38,78 @@ export default class ListView extends Component<Props> {
     history.push('/error');
   }
 
+  handleChange = (e: Object) => {
+    const { target: { value } } = e;
+    this.setState({
+      orderBy: value,
+    });
+  }
+
   render() {
+    const { orderBy } = this.state;
+
     return (
       <Fragment>
         <h1>Marvel Universe</h1>
-        <Query query={GET_CHARACTERS}>
+        <form autoComplete="off" className="filter-form">
+          <FormControl>
+            <InputLabel htmlFor="orderBy">Order By</InputLabel>
+            <Select
+              value={orderBy}
+              onChange={this.handleChange}
+              className="orderBy-select"
+              inputProps={{
+                name: 'Order By',
+                id: 'orderBy',
+              }}
+            >
+              <MenuItem value="name_asc">Name A-Z</MenuItem>
+              <MenuItem value="name_desc">Name Z-A</MenuItem>
+            </Select>
+          </FormControl>
+        </form>
+        <Query
+          query={GET_CHARACTERS}
+          variables={{ orderBy }}
+          notifyOnNetworkStatusChange
+        >
           {
-            ({ loading, error, data }) => {
-              if (loading) return <Loader />;
+            ({
+              loading,
+              error,
+              data,
+              fetchMore,
+            }) => {
+              if (loading && !data.characters) return <Loader />;
 
               if (error) {
                 this.goToError();
                 return null;
               }
 
-              return data.characters.map(item => (
-                <List>
-                  <ListItem
-                    key={uuidv1()}
-                    onClick={() => this.goToCharacterDetail(item.id)}
-                    className="list-item"
-                  >
-                    <ListItemAvatar>
-                      <Avatar alt={item.name} src={item.thumbnail} />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={item.name}
-                    />
-                  </ListItem>
-                </List>
-              ));
+              const { characters } = data;
+
+              return (
+                <CharacterList
+                  characters={characters}
+                  onSelectCharacter={this.goToCharacterDetail}
+                  loading={loading}
+                  onLoadMoreCharacters={() => fetchMore({
+                    variables: {
+                      offset: characters.length,
+                      limit: 20,
+                    },
+                    updateQuery: (prev, { fetchMoreResult }) => {
+                      if (!fetchMoreResult) return prev;
+                      return Object.assign({}, prev, {
+                        characters: [
+                          ...prev.characters,
+                          ...fetchMoreResult.characters],
+                      });
+                    },
+                  })}
+                />
+              );
             }
           }
         </Query>

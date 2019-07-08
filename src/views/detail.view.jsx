@@ -1,6 +1,6 @@
 // @flow
 
-import './detail.view.css';
+import './detail.view.pcss';
 
 import React, { Fragment, Component } from 'react';
 import { Query } from 'react-apollo';

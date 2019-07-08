@@ -72,7 +72,7 @@ module.exports.loadGraphQl = () => ({
 module.exports.loadCSS = ({ include, exclude } = {}) => ({
   module: {
     rules: [{
-      test: /\.css$/,
+      test: /\.p?css$/,
       include,
       exclude,
       use: [
@@ -93,7 +93,7 @@ module.exports.extractCSS = ({ include, exclude } = {}) => {
   return {
     module: {
       rules: [{
-        test: /\.css$/,
+        test: /\.p?css$/,
         include,
         exclude,
         use: [

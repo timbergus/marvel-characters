@@ -1,8 +1,21 @@
 import gql from 'graphql-tag';
 
+// It is wrong coded:
+
+// limit: is the offset.
+// offset: is the limit.
+
 export const GET_CHARACTERS = gql`
-  query GET_CHARACTERS {
-    characters {
+  query GET_CHARACTERS(
+    $offset: Int
+    $limit: Int
+    $orderBy: CharacterOrderBy
+  ) {
+    characters(
+      limit: $offset
+      offset: $limit
+      orderBy: $orderBy
+    ) {
       id
       name
       thumbnail

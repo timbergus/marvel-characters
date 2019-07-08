@@ -1,6 +1,6 @@
 // @flow
 
-import './loader.css';
+import './loader.pcss';
 
 import React from 'react';
 

@@ -1,6 +1,6 @@
 // @flow
 
-import './comic-list.css';
+import './comic-list.pcss';
 
 import React from 'react';
 import uuidv1 from 'uuid/v1';
