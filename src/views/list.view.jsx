@@ -3,6 +3,7 @@
 import './list.view.pcss';
 
 import React, { Fragment, Component } from 'react';
+import { connect } from 'react-redux'
 import { Query } from 'react-apollo';
 
 import FormControl from '@material-ui/core/FormControl';
@@ -15,18 +16,29 @@ import { GET_CHARACTERS } from '../apollo/queries';
 import Loader from '../components/loader';
 import CharacterList from '../components/character-list';
 
+import { setFilter } from '../redux/reducers/filter';
+
 type Props = {
   history: Object,
+  filter: Object,
+  _setFilter: Function,
 };
 
 type State = {
   orderBy: string,
 };
 
-export default class ListView extends Component<Props, State> {
+class ListView extends Component<Props, State> {
   state = {
     orderBy: 'name_asc',
   };
+
+  componentDidMount() {
+    const { filter } = this.props;
+    this.setState({
+      orderBy: filter.filter || 'name_asc',
+    });
+  }
 
   goToCharacterDetail = (id: number) => {
     const { history } = this.props;
@@ -40,6 +52,10 @@ export default class ListView extends Component<Props, State> {
 
   handleChange = (e: Object) => {
     const { target: { value } } = e;
+    const { _setFilter } = this.props;
+
+    _setFilter(value);
+
     this.setState({
       orderBy: value,
     });
@@ -117,3 +133,16 @@ export default class ListView extends Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  filter: state.filter,
+});
+
+const mapDispatchToProps = {
+  _setFilter: setFilter,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ListView);
