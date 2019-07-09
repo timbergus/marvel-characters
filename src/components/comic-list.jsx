@@ -15,25 +15,19 @@ type Props = {
   comics: Array<Object>,
 }
 
-export default (props: Props) => {
-  const { comics } = props;
-
-  return (
-    <div className="comics-list">
-      {
-        comics.map(comic => (
-          <ExpansionPanel key={uuidv1()}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{comic.name}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                This is the comic description.
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        ))
-      }
-    </div>
-  );
-};
+export default ({ comics }: Props) => (
+  <div className="comics-list">
+    {
+      comics.map(comic => (
+        <ExpansionPanel key={uuidv1()}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>{comic.title}</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <img src={comic.thumbnail} alt="comic thumbnail" />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      ))
+    }
+  </div>
+);

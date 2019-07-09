@@ -30,9 +30,18 @@ export const GET_CHARACTER_DETAIL = gql`
       name
       thumbnail
       description
-      comics {
-        name
-      }
+    }
+  }
+`;
+
+export const GET_CHARACTER_COMICS = gql`
+  query GET_CHARACTER_COMICS($id: ID!) {
+    comics(where: {
+      characters: [$id]
+    }) {
+      id
+      title
+      thumbnail
     }
   }
 `;

@@ -28,6 +28,7 @@
     "describe": false,
     "expect": false,
     "test": false,
-    "jest": false
+    "jest": false,
+    "global": false
   }
 }

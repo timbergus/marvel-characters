@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import uuidv1 from 'uuid/v1';
 
 import List from '@material-ui/core/List';
@@ -8,6 +8,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+
+import Loader from './loader';
 
 type Props = {
   characters: Array<Object>,
@@ -27,21 +29,17 @@ export default class CharacterList extends Component<Props> {
 
   handleOnScroll = () => {
     const { onLoadMoreCharacters, loading } = this.props;
-    if (((window?.innerHeight + window?.scrollY) >= document?.body?.offsetHeight) && !loading) {
+    // Use pageYOffset instead of scrollY for IE11,
+    if (((window?.innerHeight + window?.pageYOffset) >= document?.body?.offsetHeight) && !loading) {
       onLoadMoreCharacters();
     }
-  }
-
-  bottom() {
-    window.scrollTo(0, document?.body?.scrollHeight);
-    return <div style={{ textAlign: 'center' }}>...loading...</div>;
   }
 
   render() {
     const { characters, onSelectCharacter, loading } = this.props;
 
     return (
-      <>
+      <Fragment>
         <List>
           {
             characters.map(item => (
@@ -61,9 +59,9 @@ export default class CharacterList extends Component<Props> {
           }
         </List>
         {
-          loading && this.bottom()
+          loading && <Loader size="small" />
         }
-      </>
+      </Fragment>
     );
   }
 }

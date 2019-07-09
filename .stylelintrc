@@ -1,5 +1,8 @@
 {
-  "extends": "stylelint-config-recommended",
+  "extends": [
+    "stylelint-config-rational-order",
+    "stylelint-config-recommended"
+  ],
   "rules": {
     "block-no-empty": null,
     "color-no-invalid-hex": true,

@@ -3,7 +3,7 @@
 import './list.view.pcss';
 
 import React, { Fragment, Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Query } from 'react-apollo';
 
 import FormControl from '@material-ui/core/FormControl';
@@ -15,6 +15,7 @@ import { GET_CHARACTERS } from '../apollo/queries';
 
 import Loader from '../components/loader';
 import CharacterList from '../components/character-list';
+import MarvelLogo from '../components/marvel-logo';
 
 import { setFilter } from '../redux/reducers/filter';
 
@@ -66,7 +67,7 @@ class ListView extends Component<Props, State> {
 
     return (
       <Fragment>
-        <h1>Marvel Universe</h1>
+        <MarvelLogo />
         <form autoComplete="off" className="filter-form">
           <FormControl>
             <InputLabel htmlFor="orderBy">Order By</InputLabel>
@@ -96,7 +97,7 @@ class ListView extends Component<Props, State> {
               data,
               fetchMore,
             }) => {
-              if (loading && !data.characters) return <Loader />;
+              if (loading && !data.characters) return <Loader size="medium" />;
 
               if (error) {
                 this.goToError();

@@ -1,9 +1,9 @@
 body, html {
-  margin: 0 auto;
-  padding: 8px;
+  box-sizing: border-box;
   width: 100%;
   max-width: 768px;
-  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 8px;
 }
 
 * :focus {
